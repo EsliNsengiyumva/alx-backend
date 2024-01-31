@@ -1,8 +1,6 @@
 #!/usr/bin/python3
-"""sumary_line
 
-Keyword arguments:
-argument -- description
+"""Keyword arguments:argument -- description
 Return: return_description
 """
 
