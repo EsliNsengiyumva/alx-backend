@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 """ Base class for caching objects"""
+
+
 from base_caching import BaseCaching
 
 
