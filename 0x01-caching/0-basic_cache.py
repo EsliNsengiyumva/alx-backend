@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-
+""" Basic Cashe """
 from base_caching import BaseCaching
 
 class BasicCache(BaseCaching):

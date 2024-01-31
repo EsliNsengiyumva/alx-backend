@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+""" Base class for all """
 from base_caching import BaseCaching
 
 
