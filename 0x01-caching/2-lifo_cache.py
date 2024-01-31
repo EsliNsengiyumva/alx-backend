@@ -1,51 +1,46 @@
-#!/usr/bin/python3
-
-"""Keyword arguments:argument -- description
-Return: return_description
+#!/usr/bin/env python3
+"""
+LIFO Caching
 """
 
-from base_caching import BaseCaching
+
+BaseCaching = __import__('base_caching').BaseCaching
 
 
 class LIFOCache(BaseCaching):
     """
-    LIFOCache class extends BaseCaching and implements a Last-In-First-Out caching strategy.
+    class LIFOCache that inherits from BaseCaching and is a caching system
     """
 
     def __init__(self):
         """
-        Initialize an instance of LIFOCache.
+        init method
         """
         super().__init__()
+        self.key_indexes = []
 
     def put(self, key, item):
         """
-        Add an item to the cache.
-
-        Args:
-            key: The key for the item.
-            item: The item to be cached.
+        Must assign to the dictionary self.cache_data
+        the item value for the key
         """
-        if key is not None and item is not None:
-            # Assign the item value for the key
-            self.cache_data[key] = item
+        if key and item:
+            if len(self.cache_data) >= self.MAX_ITEMS:
+                if key in self.cache_data:
+                    del self.cache_data[key]
+                    self.key_indexes.remove(key)
+                else:
+                    del self.cache_data[self.key_indexes[self.MAX_ITEMS - 1]]
+                    item_discarded = self.key_indexes.pop(self.MAX_ITEMS - 1)
+                    print("DISCARD:", item_discarded)
 
-            if len(self.cache_data) > BaseCaching.MAX_ITEMS:
-                # Discard the last item put in the cache (LIFO algorithm)
-                last_item_key = list(self.cache_data.keys())[-1]
-                del self.cache_data[last_item_key]
-                print("DISCARD:", last_item_key)
+            self.cache_data[key] = item
+            self.key_indexes.append(key)
 
     def get(self, key):
         """
-        Retrieve an item from the cache.
-
-        Args:
-            key: The key of the item to be retrieved.
-
-        Returns:
-            The cached item, or None if the key is not in the cache.
+        Must return the value in self.cache_data linked to key.
         """
-        if key is not None and key in self.cache_data:
+        if key in self.cache_data:
             return self.cache_data[key]
         return None
