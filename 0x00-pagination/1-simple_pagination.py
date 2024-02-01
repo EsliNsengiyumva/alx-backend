@@ -1,17 +1,9 @@
 #!/usr/bin/env python3
-
-"""Simple pagination sample.
+""" Simple pagination
 """
 
 import csv
 from typing import List, Tuple
-
-def index_range(page: int, page_size: int) -> Tuple[int, int]:
-    """Retrieves the index range from a given page and page size.
-    """
-    start = (page - 1) * page_size
-    end = start + page_size
-    return start, end
 
 
 class Server:
@@ -20,30 +12,35 @@ class Server:
     DATA_FILE = "Popular_Baby_Names.csv"
 
     def __init__(self):
-        """Initializes a new Server instance.
-        """
-        self._dataset = None
+        self.__dataset = None
 
     def dataset(self) -> List[List]:
         """Cached dataset
         """
-        if self._dataset is None:
+        if self.__dataset is None:
             with open(self.DATA_FILE) as f:
                 reader = csv.reader(f)
                 dataset = [row for row in reader]
-            self._dataset = dataset[1:]
+            self.__dataset = dataset[1:]
 
-        return self._dataset
+        return self.__dataset
 
     def get_page(self, page: int = 1, page_size: int = 10) -> List[List]:
-        """Retrieves a page of data.
+        """ Finds the correct indexes to paginate dataset.
         """
-        assert isinstance(page, int) and isinstance(page_size, int)
-        assert page > 0 and page_size > 0
+        assert type(page) == int
+        assert type(page_size) == int
+        assert page > 0
+        assert page_size > 0
+        csv_size = len(self.dataset())
         start, end = index_range(page, page_size)
-        data = self.dataset()
-        if start > len(data):
+        end = min(end, csv_size)
+        if start >= csv_size:
             return []
-        return data[start:end]
+        return self.dataset()[start:end]
 
-# Add a newline at the end of the file
+
+def index_range(page: int, page_size: int) -> Tuple[int, int]:
+    """ Returns a tuple containing a start and end index.
+    """
+    return ((page - 1) * page_size, page * page_size)
