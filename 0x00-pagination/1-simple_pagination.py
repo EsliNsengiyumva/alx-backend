@@ -46,4 +46,4 @@ class Server:
             return []
         return data[start:end]
 
-
+# Add a newline at the end of the file
